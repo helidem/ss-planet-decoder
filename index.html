@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ss -planet decoder</title>
+  <meta name="description" content="Paste the output of `ss -planet` and get a human-readable view of listening ports, bind addresses, processes and connections.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231f6f5c'/%3E%3Cpath d='M9 11h14M9 16h9M9 21h12' stroke='%23fff' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1><code>ss -planet</code> decoder</h1>
+      <p>Paste the output of <code>sudo ss -planet</code> to see which ports are open, where they are bound and which program owns them. Everything is processed in your browser — nothing is uploaded.</p>
+    </header>
+
+    <section class="panel" aria-label="Input">
+      <label for="input">Output of <code>ss -planet</code></label>
+      <textarea id="input" spellcheck="false" autocomplete="off" placeholder="State   Recv-Q  Send-Q   Local Address:Port   Peer Address:Port  Process&#10;LISTEN  0       128            0.0.0.0:22          0.0.0.0:*      users:((&quot;sshd&quot;,pid=812,fd=3)) ino:21996 sk:2 cgroup:/system.slice/ssh.service <->"></textarea>
+      <div class="actions">
+        <button id="example" type="button">Load example</button>
+        <button id="clear" type="button" class="ghost">Clear</button>
+        <span class="hint">Tip: run it with <code>sudo</code> so process names and PIDs are included.</span>
+      </div>
+      <details class="passwd">
+        <summary>Optional: resolve UIDs to user names</summary>
+        <p>Paste the output of <code>getent passwd</code> (or <code>/etc/passwd</code>) so that <code>uid:102</code> is shown as a user name.</p>
+        <textarea id="passwd" spellcheck="false" autocomplete="off" placeholder="systemd-resolve:x:102:103:systemd Resolver,,,:/run/systemd:/usr/sbin/nologin"></textarea>
+      </details>
+    </section>
+
+    <div id="results" hidden>
+      <section class="tiles" id="tiles" aria-label="Summary"></section>
+      <section id="findings" aria-label="Notes"></section>
+      <div class="toolbar">
+        <input id="filter" type="search" placeholder="Filter by port, address, program, user…" aria-label="Filter sockets">
+        <button id="export" type="button" class="ghost">Download JSON</button>
+      </div>
+      <div id="groups"></div>
+      <details id="skipped" class="skipped" hidden></details>
+    </div>
+
+    <p id="empty" class="empty">Paste some output above, or load the example to see how it works.</p>
+
+    <footer>
+      <p>Flags decoded: <code>-p</code> processes · <code>-l</code> listening · <code>-a</code> all sockets · <code>-n</code> numeric · <code>-e</code> extended info · <code>-t</code> TCP</p>
+    </footer>
+  </main>
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>

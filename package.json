@@ -1,0 +1,11 @@
+{
+  "name": "ss-planet-decoder",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Human-readable viewer for the output of `ss -planet`",
+  "scripts": {
+    "start": "npx serve .",
+    "test": "node --test"
+  }
+}
